@@ -1,21 +1,29 @@
 ---
+// Импорт компонента заголовка секции
 import SectionHeader from './SectionHeader.astro'
+// Импорт API функции для получения отзывов из CMS (Strapi)
 import { getReviews } from '../api/collections'
 
+// Асинхронная загрузка отзывов из базы данных
 const reviews = await getReviews()
 ---
 
+{/* Условный рендеринг секции отзывов*/}
 {reviews.length > 0 && (
   <section class="reviews">
     <SectionHeader title="Отзывы" subtitle="Ваши оценки нашим трудам" />
 
+    {/*КАРУСЕЛЬ ОТЗЫВОВ*/}
     <div class="reviews__carousel">
+      {/* ТРЕК КАРУСЕЛИ */}
       <div class="reviews__track">
         {reviews.map(review => (
           <div class="reviews__slide">
+            {/* КАРТОЧКА ОТЗЫВА */}
             <div class="reviews__card">
               <p class="reviews__card-text">"{review.text}"</p>
             </div>
+            {/* БЛОК АВТОРА (имя и дата)*/}
             <div class="reviews__author">
               <p class="reviews__author-name">{review.author}</p>
               <p class="reviews__author-date">{review.date}</p>
@@ -24,7 +32,9 @@ const reviews = await getReviews()
         ))}
       </div>
 
+      {/* ЭЛЕМЕНТЫ УПРАВЛЕНИЯ КАРУСЕЛЬЮ*/}
       <div class="reviews__controls">
+        {/* КНОПКА "ПРЕДЫДУЩИЙ ОТЗЫВ" */}
         <button class="reviews__arrow reviews__arrow--prev" aria-label="Предыдущий отзыв">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -45,6 +55,7 @@ const reviews = await getReviews()
           ))}
         </div>
 
+        {/* КНОПКА "СЛЕДУЮЩИЙ ОТЗЫВ" */}
         <button class="reviews__arrow reviews__arrow--next" aria-label="Следующий отзыв">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -56,23 +67,31 @@ const reviews = await getReviews()
 )}
 
 <script>
+
+  /**ИНИЦИАЛИЗАЦИЯ КАРУСЕЛИ ОТЗЫВОВ*/
   function initReviews() {
+
+        // Находим элементы DOM
     const track = document.querySelector('.reviews__track') as HTMLElement
     const slides = document.querySelectorAll('.reviews__slide')
     const dots = document.querySelectorAll('.reviews__dot')
     const prevBtn = document.querySelector('.reviews__arrow--prev')
     const nextBtn = document.querySelector('.reviews__arrow--next')
 
+      // Защита: если трек или слайды не найдены — выходим
     if (!track || slides.length === 0) return
 
+    // Текущий индекс активного слайда
     let activeIndex = 0
 
+    /** ОБНОВЛЕНИЕ АКТИВНОЙ ТОЧКИ*/
     function updateDots() {
       dots.forEach((dot, i) => {
         dot.classList.toggle('reviews__dot--active', i === activeIndex)
       })
     }
 
+    /** ПРОКРУТКА К ВЫБРАННОМУ СЛАЙДУ*/
     function scrollToSlide(index: number) {
       const slide = slides[index] as HTMLElement
       if (!slide) return
@@ -84,16 +103,19 @@ const reviews = await getReviews()
       updateDots()
     }
 
+    // ОБРАБОТЧИК КНОПКИ "НАЗАД"
     prevBtn?.addEventListener('click', () => {
       activeIndex = (activeIndex - 1 + slides.length) % slides.length
       scrollToSlide(activeIndex)
     })
 
+    // ОБРАБОТЧИК КНОПКИ "ВПЕРЁД"
     nextBtn?.addEventListener('click', () => {
       activeIndex = (activeIndex + 1) % slides.length
       scrollToSlide(activeIndex)
     })
 
+    // ОБРАБОТЧИКИ КЛИКОВ ПО ТОЧКАМ
     dots.forEach(dot => {
       dot.addEventListener('click', () => {
         const index = Number((dot as HTMLElement).dataset.index)
@@ -101,7 +123,7 @@ const reviews = await getReviews()
       })
     })
 
-    // Update active dot on scroll
+    // АВТОМАТИЧЕСКОЕ ОБНОВЛЕНИЕ АКТИВНОЙ ТОЧКИ ПРИ ПРОКРУТКЕ
     let scrollTimeout: ReturnType<typeof setTimeout>
     track.addEventListener('scroll', () => {
       clearTimeout(scrollTimeout)
@@ -113,6 +135,8 @@ const reviews = await getReviews()
         slides.forEach((slide, i) => {
           const rect = slide.getBoundingClientRect()
           const dist = Math.abs(rect.left + rect.width / 2 - center)
+          
+          // Если текущий слайд ближе к центру, чем предыдущие — запоминаем его индекс
           if (dist < minDist) {
             minDist = dist
             closest = i
@@ -123,7 +147,7 @@ const reviews = await getReviews()
       }, 100)
     })
   }
-
+// Инициализируем карусель при первой загрузке страницы
   initReviews()
   document.addEventListener('astro:after-swap', initReviews)
 </script>
@@ -151,6 +175,8 @@ const reviews = await getReviews()
     }
   }
 
+
+  /*ОТДЕЛЬНЫЙ СЛАЙД*/
   &__slide {
     display: flex;
     flex-direction: column;
@@ -159,6 +185,7 @@ const reviews = await getReviews()
     scroll-snap-align: center;
   }
 
+    /*КАРТОЧКА ОТЗЫВА*/
   &__card {
     flex: 1;
     border: 2px solid var(--color-accent-light);
@@ -167,6 +194,7 @@ const reviews = await getReviews()
     position: relative;
     margin-bottom: 20px;
 
+      /*ТРЕУГОЛЬНИК-ХВОСТИК*/
     &::before,
     &::after {
       content: '';
@@ -177,6 +205,7 @@ const reviews = await getReviews()
       height: 0;
     }
 
+      /*ВНЕШНИЙ ТРЕУГОЛЬНИК*/
     &::before {
       bottom: -18px;
       border-left: 14px solid transparent;
@@ -184,6 +213,7 @@ const reviews = await getReviews()
       border-top: 18px solid var(--color-accent-light);
     }
 
+      /* ВНУТРЕННИЙ ТРЕУГОЛЬНИК*/
     &::after {
       border-left: 12px solid transparent;
       border-right: 12px solid transparent;
@@ -215,6 +245,7 @@ const reviews = await getReviews()
     }
   }
 
+    /*ЭЛЕМЕНТЫ УПРАВЛЕНИЯ*/
   &__controls {
     display: flex;
     align-items: center;
@@ -223,6 +254,7 @@ const reviews = await getReviews()
     margin-top: 32px;
   }
 
+  /*  КНОПКИ-СТРЕЛКИ*/
   &__arrow {
     color: #fff;
     transition: opacity 0.3s;
@@ -232,20 +264,24 @@ const reviews = await getReviews()
     }
   }
 
+/*  КОНТЕЙНЕР С ТОЧКАМИ*/
   &__dots {
     display: flex;
     align-items: center;
     gap: 8px;
   }
 
+  /*  ТОЧКА ПАГИНАЦИИ*/
   &__dot {
     color: rgba(255, 255, 255, 0.4);
     transition: color 0.3s;
 
+    /* Активная точка */
     &--active {
       color: #fff;
     }
 
+    /* При наведении — более яркая */
     &:hover {
       color: rgba(255, 255, 255, 0.7);
     }

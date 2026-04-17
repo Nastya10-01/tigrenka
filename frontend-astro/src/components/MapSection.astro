@@ -1,14 +1,20 @@
 ---
+// Импорт компонента заголовка секции 
 import SectionHeader from './SectionHeader.astro'
+// Импорт API функции для получения данных карты из CMS (Strapi)
 import { getMapSection } from '../api/map'
 
+// Асинхронная загрузка данных для секции карты
 const data = await getMapSection()
 ---
 
+{/* Условный рендеринг секции карты*/}
 {data && (
   <section class="map-section">
     <SectionHeader title={data.title} subtitle={data.subtitle} />
+     {/* КОНТЕЙНЕР ДЛЯ КАРТЫ*/}
     <div class="map-section__wrapper">
+      {/* ВСТРАИВАЕМАЯ КАРТА*/}
       <iframe
         class="map-section__iframe"
         src={data.embedUrl}

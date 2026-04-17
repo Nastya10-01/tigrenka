@@ -1,15 +1,19 @@
 ---
+// Интерфейс пропсов компонента
 interface Props {
   cards: any[]
   image1?: string
   image2?: string
 }
 
+// Деструктуризация пропсов для удобного использования в шаблоне
 const { cards, image1, image2 } = Astro.props
 ---
 
 <section class="pricing">
+  {/*СЕТКА КАРТОЧЕК*/}
   <div class="pricing__grid">
+    {/*ПЕРВАЯ ТЕКСТОВАЯ КАРТОЧКА */}
     {cards[0] && (
       <div class="pricing__card pricing__card--text">
         <span class="pricing__badge">{cards[0].badge}</span>
@@ -23,6 +27,7 @@ const { cards, image1, image2 } = Astro.props
     <div class="pricing__card pricing__card--image pricing__card--img2">
       <img src={image2} alt="" width="560" height="310" loading="lazy">
     </div>
+    {/*ВТОРАЯ ТЕКСТОВАЯ КАРТОЧКА */}
     {cards[1] && (
       <div class="pricing__card pricing__card--text pricing__card--text2">
         <span class="pricing__badge">{cards[1].badge}</span>
@@ -47,6 +52,7 @@ const { cards, image1, image2 } = Astro.props
     height: 310px;
     transition: all 0.4s ease;
 
+    /*ЭФФЕКТ ПРИ НАВЕДЕНИИ*/
     &:hover {
       transform: scale(1.03);
       box-shadow: 0 20px 40px rgba(255, 150, 23, 0.3);
@@ -74,6 +80,7 @@ const { cards, image1, image2 } = Astro.props
     }
   }
 
+  /*акцентная метка*/
   &__badge {
     display: inline-block;
     width: fit-content;
@@ -86,6 +93,7 @@ const { cards, image1, image2 } = Astro.props
     border-radius: 10px;
   }
 
+  /* ЗАГОЛОВОК КАРТОЧКИ*/
   &__subtitle {
     font-size: 24px;
     font-weight: 700;

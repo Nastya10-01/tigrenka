@@ -1,14 +1,19 @@
 ---
+// Интерфейс пропсов компонента
 interface Props {
   title: string
   subtitle?: string
 }
 
+// Деструктуризация пропсов для удобного использования в шаблоне
 const { title, subtitle } = Astro.props
 ---
 
+<!--ЗАГОЛОВОК СЕКЦИИ -->
 <div class="section-header">
+  <!-- ОСНОВНОЙ ЗАГОЛОВОК  -->
   <h2 class="section-header__title">{title}</h2>
+  <!--ПОДЗАГОЛОВОК  -->
   {subtitle && <p class="section-header__subtitle">{subtitle}</p>}
 </div>
 
@@ -19,6 +24,7 @@ const { title, subtitle } = Astro.props
   gap: 24px;
   margin-bottom: 80px;
 
+  /* ОСНОВНОЙ ЗАГОЛОВОК (h2)*/
   &__title {
     font-family: 'Montserrat Alternates', sans-serif;
     font-size: 30px;
@@ -30,6 +36,7 @@ const { title, subtitle } = Astro.props
     white-space: nowrap;
   }
 
+  /* ПОДЗАГОЛОВОК */
   &__subtitle {
     font-size: 16px;
     line-height: 1.4;

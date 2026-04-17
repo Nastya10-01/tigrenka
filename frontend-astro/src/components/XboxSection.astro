@@ -1,6 +1,8 @@
 ---
+// Импорт компонента заголовка секции
 import SectionHeader from './SectionHeader.astro'
 
+// Интерфейс пропсов компонента
 interface Props {
   id?: string
   description?: string
@@ -9,18 +11,24 @@ interface Props {
   image2?: string
 }
 
+// Деструктуризация пропсов для удобного использования в шаблоне
 const { id, description, features, image1, image2 } = Astro.props
 ---
 
+<!--СЕКЦИЯ XBOX ЗОНЫ-->
 <section id={id} class="xbox">
+  {/*ЗАГОЛОВОК СЕКЦИИ*/}
   <SectionHeader title="XBOX" />
+  {/*СЕТКА КАРТОЧЕК*/}
   <div class="xbox__grid">
+     {/*ПЕРВАЯ ТЕКСТОВАЯ КАРТОЧКА */}
     <div class="xbox__card xbox__card--text xbox__card--desc">
       <p>{description || 'Современная арена, где каждая деталь, каждый звук и каждое движение становятся частью вашей захватывающей истории.'}</p>
     </div>
     <div class="xbox__card xbox__card--image xbox__card--img1">
       <img src={image1} alt="Xbox" width="560" height="310" loading="lazy">
     </div>
+    {/*ВТОРАЯ ТЕКСТОВАЯ КАРТОЧКА */}
     <div class="xbox__card xbox__card--image xbox__card--img2">
       <img src={image2} alt="Xbox" width="560" height="310" loading="lazy">
     </div>
@@ -38,12 +46,14 @@ const { id, description, features, image1, image2 } = Astro.props
     gap: 24px;
   }
 
+  /* БАЗОВЫЕ СТИЛИ ДЛЯ КАРТОЧЕК*/
   &__card {
     border-radius: 24px;
     overflow: hidden;
     height: 310px;
     transition: all 0.4s ease;
 
+    /*ЭФФЕКТ ПРИ НАВЕДЕНИИ*/
     &:hover {
       transform: scale(1.03);
       box-shadow: 0 20px 40px rgba(255, 150, 23, 0.3);

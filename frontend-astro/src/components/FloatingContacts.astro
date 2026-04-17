@@ -1,18 +1,21 @@
 ---
+// Интерфейс пропсов компонента
 interface Props {
   phone?: string
   vkLink?: string
   telegramLink?: string
 }
-
+// Деструктуризация пропсов для удобного использования в шаблоне
 const { phone, vkLink, telegramLink } = Astro.props
 ---
 
+<!-- ПЛАВАЮЩИЕ КОНТАКТЫ -->
 <div class="floating-contacts">
   <div class="floating-contacts__label">
     Свяжитесь с нами!
   </div>
 
+  <!--СТЕК КНОПОК (дополнительные кнопки, появляются при нажатии на главную)-->
   <div class="floating-contacts__stack">
     {phone && (
       <a href={`tel:${phone}`} class="floating-contacts__btn floating-contacts__btn--phone" aria-label="Позвонить">
@@ -35,6 +38,7 @@ const { phone, vkLink, telegramLink } = Astro.props
     )}
   </div>
 
+  <!--ГЛАВНАЯ КНОПКА-->
   <button
     type="button"
     class="floating-contacts__btn floating-contacts__btn--main"
@@ -51,20 +55,25 @@ const { phone, vkLink, telegramLink } = Astro.props
 </div>
 
 <script>
+  /**ИНИЦИАЛИЗАЦИЯ ПЛАВАЮЩИХ КОНТАКТОВ*/
   function initFloatingContacts() {
+    
+    // Находим контейнер с плавающими контактами
     const container = document.querySelector('.floating-contacts') as HTMLElement
     if (!container) return
-
+    
+    // Находим главную кнопку (переключатель) и подсказку (лейбл)
     const mainBtn = container.querySelector('.floating-contacts__btn--main')
     const label = container.querySelector('.floating-contacts__label') as HTMLElement
 
-    // Auto-hide label after 5 seconds
+    /**АВТОМАТИЧЕСКОЕ СКРЫТИЕ ПОДСКАЗКИ*/
     if (label) {
       setTimeout(() => {
         label.classList.add('floating-contacts__label--hidden')
-      }, 5000)
+      }, 5000) // 5 секунд
     }
 
+    /**ОБРАБОТЧИК НАЖАТИЯ НА ГЛАВНУЮ КНОПКУ*/
     mainBtn?.addEventListener('click', () => {
       const isOpen = container.classList.toggle('floating-contacts--open')
       mainBtn.setAttribute('aria-label', isOpen ? 'Закрыть контакты' : 'Открыть контакты')
@@ -74,7 +83,7 @@ const { phone, vkLink, telegramLink } = Astro.props
       }
     })
   }
-
+  // Инициализируем функционал при первой загрузке страницы
   initFloatingContacts()
   document.addEventListener('astro:after-swap', initFloatingContacts)
 </script>
@@ -115,12 +124,14 @@ const { phone, vkLink, telegramLink } = Astro.props
       border-color: transparent transparent transparent #263238;
     }
 
+    /*СКРЫТАЯ ПОДСКАЗКА*/
     &--hidden {
       opacity: 0;
       pointer-events: none;
     }
   }
 
+  /* СТЕК ДОПОЛНИТЕЛЬНЫХ КНОПОК*/
   &__stack {
     display: flex;
     flex-direction: column;
@@ -141,6 +152,7 @@ const { phone, vkLink, telegramLink } = Astro.props
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 
+    /*ЭФФЕКТ ПРИ НАВЕДЕНИИ*/
     &:hover {
       transform: translateY(-2px) scale(1.05);
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
@@ -181,7 +193,7 @@ const { phone, vkLink, telegramLink } = Astro.props
     display: none;
   }
 
-  // Open state
+  /* ОТКРЫТОЕ СОСТОЯНИЕ МЕНЮ*/
   &--open {
     .floating-contacts__btn--main {
       background-color: #fff;

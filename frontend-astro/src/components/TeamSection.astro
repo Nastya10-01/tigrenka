@@ -1,17 +1,23 @@
 ---
+// Импорт компонента заголовка секции
 import SectionHeader from './SectionHeader.astro'
+// Импорт API функции для получения данных о команде из CMS (Strapi)
 import { getTeamMembers } from '../api/collections'
 import pavImg from '../assets/images/pav.png'
 
+// Асинхронная загрузка данных о членах команды
 const members = await getTeamMembers()
 ---
-
+{/* Условный рендеринг секции команды*/}
 {members.length > 0 && (
   <section class="team">
     <SectionHeader title="Наша команда" subtitle="Кто веселит, а также помогает Вам и вашим детям" />
+    {/*СЕТКА КАРТОЧЕК КОМАНДЫ*/}
     <div class="team__grid">
+      {/* Перебираем массив членов команды и рендерим карточку для каждого member  description */}
       {members.map(member => (
         <div class="team__card">
+          {/*АВАТАР иконка с инициалом*/}
           <div class="team__avatar">
             <span class="team__avatar-placeholder">{member.name.charAt(0)}</span>
           </div>
@@ -32,38 +38,46 @@ const members = await getTeamMembers()
     gap: 24px;
   }
 
+   /*КАРТОЧКА СОТРУДНИКА*/
   &__card {
     border: 2px solid var(--color-primary);
     border-radius: 24px;
     padding: 32px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 
+    /*ЭФФЕКТ ПРИ НАВЕДЕНИИ НА КАРТОЧКУ*/
     &:hover {
       transform: translateY(-6px);
       box-shadow: 0 15px 30px rgba(255, 150, 23, 0.25);
 
+      /* Лапка */
       .team__paw {
         transform: scale(1.1) rotate(10deg);
       }
 
+      /* Аватар: тёмная оранжевая обводка */
       .team__avatar {
         border-color: var(--color-primary-dark);
       }
 
+      /* Инициал: тёмный оранжевый цвет */
       .team__avatar-placeholder {
         color: var(--color-primary-dark);
       }
 
+      /* Имя: оранжевый цвет */
       .team__name {
         color: var(--color-primary);
       }
 
+      /* Разделитель: тёмный оранжевый цвет */
       .team__divider {
         background-color: var(--color-primary-dark);
       }
     }
   }
 
+  /* ДЕКОРАТИВНАЯ ИКОНКА ЛАПКИ*/
   &__paw {
     width: 25px !important;
     height: 25px !important;
@@ -75,6 +89,7 @@ const members = await getTeamMembers()
     transition: transform 0.3s ease, opacity 0.3s ease;
   }
 
+  /* Аватар(круглая область) */
   &__avatar {
     width: 64px;
     height: 64px;
@@ -88,6 +103,7 @@ const members = await getTeamMembers()
     transition: border-color 0.3s ease;
   }
 
+  /* ПЛЕЙСХОЛДЕР АВАТАРА */
   &__avatar-placeholder {
     font-family: 'Montserrat', sans-serif;
     font-size: 24px;
