@@ -1,5 +1,7 @@
 ---
+// Импорт основного layout-компонента (общая структура страницы)
 import Layout from '../layouts/Layout.astro'
+// Импорт секционных компонентов для построения страницы
 import AppBanner from '../components/AppBanner.astro'
 import ActivityParkSection from '../components/ActivityParkSection.astro'
 import XboxSection from '../components/XboxSection.astro'
@@ -7,18 +9,29 @@ import ReviewsSection from '../components/ReviewsSection.astro'
 import ContactFormSection from '../components/ContactFormSection.astro'
 import MapSection from '../components/MapSection.astro'
 import { getAttractionsPage } from '../api/attractions'
+
+// API функции для работы с данными из Strapi 
 import { strapiMedia } from '../api/strapi'
 
 const pageData = await getAttractionsPage()
 ---
 
+
+<!--Передаём данные в Layout компонент-->
 <Layout
   title="Аттракционы и развлечения — Игровой центр Тигра в Аше"
   description="Активити-парк с 6 игровыми зонами, батутная арена, бассейн с шарами, лабиринт, горки, XBOX — развлечения для детей любого возраста в центре Аши."
 >
+
+<!--Основной контейнер страницы-->
   <div class="page container">
     {pageData && (
       <>
+
+      <!--Баннер в верхней части страницы
+          Принимает заголовок, текст, текст кнопки, ссылку и изображение
+          Функция strapiMedia() преобразует относительный путь из CMS в полный URL
+        -->
         <AppBanner
           title={pageData.bannerTitle}
           text={pageData.bannerText}
@@ -26,6 +39,8 @@ const pageData = await getAttractionsPage()
           buttonLink={pageData.bannerButtonLink}
           image={strapiMedia(pageData.bannerImage)}
         />
+
+        <!--Секция "Активити-парк"-->
         <ActivityParkSection
           id="activity-park"
           label={pageData.activityParkLabel}
@@ -35,6 +50,8 @@ const pageData = await getAttractionsPage()
           image1={strapiMedia(pageData.activityParkImage1)}
           image2={strapiMedia(pageData.activityParkImage2)}
         />
+
+        <!--Секция "Xbox"-->
         <XboxSection
           id="xbox"
           description={pageData.xboxDescription}
@@ -43,9 +60,9 @@ const pageData = await getAttractionsPage()
           image2={strapiMedia(pageData.xboxImage2)}
         />
       </>
-    )}
-    <ReviewsSection />
-    <ContactFormSection />
-    <MapSection />
+    )} 
+    <ReviewsSection />      <!-- Секция с отзывами клиентов -->
+    <ContactFormSection />   <!-- Форма обратной связи  -->
+    <MapSection />   <!-- Яндекс/Google карта с местоположением игрового центра -->
   </div>
 </Layout>
