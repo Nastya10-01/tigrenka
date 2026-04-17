@@ -1,5 +1,8 @@
 ---
+// Импорт основного layout-компонента (общая структура с шапкой, подвалом, метатегами)
 import Layout from '../layouts/Layout.astro'
+
+// Импорт секционных компонентов для построения главной страницы
 import AppBanner from '../components/AppBanner.astro'
 import AdvantagesSection from '../components/AdvantagesSection.astro'
 import FaqSection from '../components/FaqSection.astro'
@@ -7,17 +10,25 @@ import TeamSection from '../components/TeamSection.astro'
 import ReviewsSection from '../components/ReviewsSection.astro'
 import ContactFormSection from '../components/ContactFormSection.astro'
 import MapSection from '../components/MapSection.astro'
+
+// API функции для работы с данными из Strapi 
 import { getHomePage } from '../api/home'
 import { strapiMedia } from '../api/strapi'
 
+// Асинхронная загрузка данных главной страницы из CMS
 const pageData = await getHomePage()
 ---
 
+<!--Передаём в Layout метаданные для SEO-->
 <Layout
   title="Игровой центр Тигра — детский развлекательный центр в Аше"
   description="Игровой центр Тигра в Аше — детский развлекательный центр с 6 игровыми зонами, батутной ареной, XBOX и банкетной комнатой. Для детей от 1 до 12 лет."
 >
+
+<!--Основной контейнер главной страницы-->
   <div class="page container">
+
+    <!--Условный рендеринг баннера: Показываем баннер если данные успешно загружены из CMS-->
     {pageData && (
       <AppBanner
         title={pageData.bannerTitle}
@@ -26,11 +37,18 @@ const pageData = await getHomePage()
         image={strapiMedia(pageData.bannerImage)}
       />
     )}
+
+    <!--Секция с преимуществами игрового центра-->
     <AdvantagesSection />
+    <!--Секция с часто задаваемыми вопросами (FAQ)-->
     <FaqSection />
+    <!--Секция с командой сотрудников-->
     <TeamSection />
+    <!--Секция с отзывами клиентов-->
     <ReviewsSection />
+    <!--Форма обратной связи-->
     <ContactFormSection />
+    <!--Карта с местоположением-->
     <MapSection />
   </div>
 </Layout>

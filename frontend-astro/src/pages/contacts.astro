@@ -1,16 +1,24 @@
 ---
+// Импорт основного layout-компонента (общая структура страницы с шапкой, подвалом и метатегами)
 import Layout from '../layouts/Layout.astro'
 import ContactsSection from '../components/ContactsSection.astro'
 import MapSection from '../components/MapSection.astro'
 ---
 
+<!--Передаём в Layout необходимые метаданные для SEO и отображения-->
 <Layout
   title="Контакты — Игровой центр Тигра в Аше"
   description="Адрес: г. Аша, ул. Толстого, дом 5. Телефон: +7-912-307-08-07. Как добраться до игрового центра Тигра — карта и контактная информация."
   bodyClass="contacts-bg"
 >
+
+<!--Основной контейнер страницы с контактами-->
   <div class="contacts page container">
+    
+    <!--Секция с контактной информацией-->
     <ContactsSection />
+
+    <!--Секция с интерактивной картой-->
     <MapSection />
   </div>
 </Layout>

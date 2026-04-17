@@ -1,34 +1,47 @@
 ---
+// Импорт основного layout-компонента (общая структура с шапкой, подвалом и метатегами)
 import Layout from '../layouts/Layout.astro'
+
+// Импорт секционных компонентов для построения страницы цен
 import AppBanner from '../components/AppBanner.astro'
 import PricingSection from '../components/PricingSection.astro'
 import ContactFormSection from '../components/ContactFormSection.astro'
 import MapSection from '../components/MapSection.astro'
+
+// API функции для работы с данными из Strapi (CMS)
 import { getPricesPage } from '../api/prices'
 import { getPricingCards } from '../api/collections'
 import { strapiMedia } from '../api/strapi'
 
+// Параллельная загрузка данных для оптимизации производительности
 const [pageData, pricingCards] = await Promise.all([
-  getPricesPage(),
-  getPricingCards(),
+  getPricesPage(), // Данные о странице: заголовок баннера, вступительные тексты, изображения
+  getPricingCards(), // Массив карточек с ценами: название услуги, стоимость, описание, иконка
 ])
 ---
 
+<!--Передаём в Layout метаданные для SEO-->
 <Layout
   title="Цены — Игровой центр Тигра в Аше"
   description="Стоимость посещения игрового центра Тигра в Аше. Билеты на аттракционы, XBOX, праздники и дни рождения. Доступные цены для всей семьи."
 >
+
+  <!--Основной контейнер страницы-->
   <div class="page container">
+    <!--Условный рендеринг баннера: Показываем баннер если данные успешно загружены из CMS-->
     {pageData && (
       <>
+        <!--Баннер страницы цен-->
         <AppBanner
           title={pageData.bannerTitle}
           image={strapiMedia(pageData.bannerImage)}
         />
+        <!--Блок с вступительным текстом о ценах-->
         <div class="prices__text">
           <p>{pageData.introText1}</p>
           <p>{pageData.introText2}</p>
         </div>
+        <!--Секция с карточками цен (тарифы, услуги, развлечения)-->
         <PricingSection
           cards={pricingCards}
           image1={strapiMedia(pageData.pricingImage1)}
@@ -36,12 +49,16 @@ const [pageData, pricingCards] = await Promise.all([
         />
       </>
     )}
-    <ContactFormSection />
+      <!--Форма обратной связи-->
+      <ContactFormSection />
+    <!--Карта с местоположением-->
     <MapSection />
   </div>
 </Layout>
 
 <style lang="scss">
+
+  /*Стили для блока вступительного текста о ценах*/
 .prices__text {
   background-color: var(--color-primary);
   color: #fff;
@@ -51,6 +68,8 @@ const [pageData, pricingCards] = await Promise.all([
   font-weight: 500;
   line-height: 1.6;
 
+  /* 
+    Стиль для соседних параграфов */
   p + p {
     margin-top: 8px;
   }
