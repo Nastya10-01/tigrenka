@@ -1,23 +1,36 @@
 ---
+
+// Импорт компонента заголовка секции (общий для всего сайта)
 import SectionHeader from './SectionHeader.astro'
+
+// Импорт API функций для получения данных из Strapi CMS
 import { getAdvantageCards } from '../api/collections'
 import { getHomePage } from '../api/home'
 import { strapiMedia } from '../api/strapi'
 
+// Параллельная загрузка двух независимых наборов данных
+// Promise.all выполняет запросы одновременно, что ускоряет загрузку страницы
+// 
+// cards: массив карточек с преимуществами (например: безопасность, профессионализм, удобство)
+// featured: данные для специального блока с двумя колонками (активити-парк и Xbox)
 const [cards, featured] = await Promise.all([
   getAdvantageCards(),
   getHomePage(),
 ])
 ---
 
+{/*Условный рендеринг секции*/}
 {cards.length > 0 && (
   <section class="advantages">
     <SectionHeader title="Наши преимущества" subtitle="Почему у нас Вам и вашим детям будет комфортно и весело" />
 
+
+    {/*Сетка с карточками преимуществ*/}
     <div class="advantages__grid">
       {cards.map(card => (
         <div class="advantages__card">
           <div class="advantages__label-wrap"><span class="advantages__label">{card.label}</span></div>
+          {/*Условный рендеринг числового блока*/}
           {card.number && (
             <div class="advantages__bottom">
               <div class="advantages__value">
@@ -26,11 +39,15 @@ const [cards, featured] = await Promise.all([
               </div>
             </div>
           )}
+          {/*Иконка/изображение преимущества*/}
           <img src={strapiMedia(card.image)} alt="" class:list={['advantages__icon', { 'advantages__icon--large': card.largeIcon }]} width="200" height="200" loading="lazy">
         </div>
       ))}
     </div>
 
+
+    {/*Специальный featured-блок с двумя колонками
+      Показывается только если данные из CMS успешно загружены*/}
     {featured && (
       <div class="advantages__featured">
         <div class="advantages__label-wrap"><span class="advantages__label">{featured.featuredLabel || 'Найдите развлечения по душе'}</span></div>
@@ -60,6 +77,7 @@ const [cards, featured] = await Promise.all([
     gap: 40px;
   }
 
+  /*Карточка преимущества*/
   &__card {
     position: relative;
     overflow: hidden;
@@ -72,17 +90,20 @@ const [cards, featured] = await Promise.all([
     height: 310px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 
+     /*Эффект при наведении на карточку*/
     &:hover {
       transform: scale(1.03);
       box-shadow: 0 15px 35px rgba(255, 150, 23, 0.25);
     }
   }
 
+  /* Обёртка для метки */
   &__label-wrap {
     margin-bottom: 18px;
     max-width: 80%;
   }
 
+  /*Метка преимущества*/
   &__label {
     font-family: 'Montserrat Alternates', sans-serif;
     font-size: 30px;
@@ -96,6 +117,7 @@ const [cards, featured] = await Promise.all([
     -webkit-box-decoration-break: clone;
   }
 
+  /* Нижняя часть карточки */
   &__bottom {
     display: flex;
     align-items: flex-end;
@@ -103,10 +125,12 @@ const [cards, featured] = await Promise.all([
     margin-top: auto;
   }
 
+  /* Контейнер для числа и единицы измерения */
   &__value {
     flex: 1;
   }
 
+  /*Иконка/изображение преимущества*/
   &__icon {
     position: absolute;
     right: -40px;
@@ -116,6 +140,7 @@ const [cards, featured] = await Promise.all([
     object-fit: contain;
     transition: all 0.3s ease;
 
+    /*Модификатор для увеличенной иконки*/
     &--large {
       right: 20px;
       transform: scale(1.5);
@@ -129,6 +154,7 @@ const [cards, featured] = await Promise.all([
     margin-top: 40px;
   }
 
+  /* Контейнер для двух колонок */
   &__cols {
     display: flex;
     gap: 40px;
@@ -141,11 +167,13 @@ const [cards, featured] = await Promise.all([
     flex-direction: column;
   }
 
+  /* Вертикальный разделитель между колонками*/
   &__col-divider {
     width: 2px;
     background-color: var(--color-primary);
   }
 
+  /* Заголовок колонки (например: "Активити парк" или "XBOX зона") */
   &__col-title {
     font-family: 'Montserrat', sans-serif;
     font-size: 30px;
@@ -153,12 +181,14 @@ const [cards, featured] = await Promise.all([
     margin-bottom: 12px;
   }
 
+  /* Текстовое описание в колонке */
   &__col-text {
     font-size: 16px;
     line-height: 1.4;
     margin-bottom: auto;
   }
 
+  /* Ссылка "Подробнее"  */
   &__col-link {
     display: inline-flex;
     align-items: center;
@@ -170,6 +200,7 @@ const [cards, featured] = await Promise.all([
     color: var(--color-link);
     transition: gap 0.3s ease;
 
+    /* Псевдоэлемент для стрелки (→) */
     &::after {
       content: '\2192';
       display: inline-flex;

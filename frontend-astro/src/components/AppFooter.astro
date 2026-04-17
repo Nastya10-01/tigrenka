@@ -1,21 +1,28 @@
 ---
+// Импорт API функции для получения данных подвала (телефон, адрес, ссылки на соцсети)
 import { getFooter } from '../api/footer'
 import logoImg from '../assets/images/logo.png'
 import vkImg from '../assets/images/socials/vk.png'
 import instImg from '../assets/images/socials/inst.png'
 import tgImg from '../assets/images/socials/tg.png'
 
+// Асинхронная загрузка данных для подвала из CMS (Strapi)
 const data = await getFooter()
 ---
 
+{/* Условный рендеринг подвала
+  Показываем футер  если данные успешно загружены из API*/}
 {data && (
   <footer class="footer">
+    {/* Внутренний контейнер */}
     <div class="footer__inner container">
+      {/* ВЕРХНЯЯ СЕКЦИЯ ПОДВАЛА*/}
       <div class="footer__top">
         <a href="/" class="footer__logo">
           <img src={logoImg.src} alt="Логотип" class="footer__logo-icon" width="64" height="64">
           Игровая<br>тигра
         </a>
+        {/*Навигационное меню подвала*/}
         <nav class="footer__nav">
           <a href="/" class="footer__link">О парке</a>
           <a href="/attractions" class="footer__link">Аттракционы</a>
@@ -41,6 +48,7 @@ const data = await getFooter()
         </div>
       </div>
 
+       {/*СРЕДНЯЯ СЕКЦИЯ ПОДВАЛА*/}
       <div class="footer__middle">
         <div class="footer__contacts">
           <h3 class="footer__heading">Свяжитесь с нами</h3>
@@ -59,6 +67,7 @@ const data = await getFooter()
 
       <hr class="footer__divider">
 
+      {/*НИЖНЯЯ СЕКЦИЯ ПОДВАЛА*/}
       <div class="footer__bottom">
         <span>{data.copyright || '©2025 TigraIgra'}</span>
         <span>Все права защищены</span>
@@ -74,11 +83,14 @@ const data = await getFooter()
   </div>
 </div>
 
+{/*Обрабатывает отправку формы подписки и управление попапом*/}
 <script>
   function initFooter() {
+    // Находим форму подписки и попап в DOM
     const form = document.querySelector('.footer__form')
     const popup = document.querySelector('.popup--subscribe') as HTMLElement
 
+    // Обработчик отправки формы
     form?.addEventListener('submit', (e) => {
       e.preventDefault()
       if (popup) {
@@ -107,6 +119,7 @@ const data = await getFooter()
     })
   }
 
+  // Инициализируем при первой загрузке страницы
   initFooter()
   document.addEventListener('astro:after-swap', initFooter)
 </script>
@@ -123,6 +136,7 @@ const data = await getFooter()
     padding: 48px 40px 40px;
   }
 
+  /* Верхняя секция: логотип, навигация, соцсети — горизонтально */
   &__top {
     display: flex;
     align-items: center;
@@ -146,6 +160,7 @@ const data = await getFooter()
     object-fit: contain;
   }
 
+  /* Навигационное меню  */
   &__nav {
     display: flex;
     align-items: center;
@@ -163,6 +178,7 @@ const data = await getFooter()
     }
   }
 
+  /* Иконка социальной сети */
   &__socials {
     display: flex;
     align-items: center;
@@ -185,6 +201,7 @@ const data = await getFooter()
     }
   }
 
+  /* Средняя секция (контакты + форма подписки)*/
   &__middle {
     display: flex;
     align-items: flex-start;
@@ -277,6 +294,7 @@ const data = await getFooter()
     border-top: 1px solid rgba(255, 255, 255, 0.2);
   }
 
+  /* Нижняя секция  */
   &__bottom {
     display: flex;
     align-items: center;

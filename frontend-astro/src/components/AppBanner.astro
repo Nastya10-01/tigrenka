@@ -1,4 +1,5 @@
 ---
+// Интерфейс пропсов (входных параметров) компонента
 interface Props {
   title: string
   text?: string
@@ -7,16 +8,21 @@ interface Props {
   image: string
 }
 
+// Деструктуризация пропсов для удобного использования в шаблоне
 const { title, text, buttonText, buttonLink, image } = Astro.props
 ---
 
 <section class="banner">
+  <!-- 
+    Внутренний контейнер баннера-->
   <div class="banner__inner">
+    <!--Левая часть баннера с контентом-->
     <div class="banner__content">
       <h1 class="banner__title">{title}</h1>
       {text && <p class="banner__text">{text}</p>}
       {buttonText && <a href={buttonLink} class="banner__button">{buttonText}</a>}
     </div>
+    <!-- Правая часть баннера с изображением-->
     <div class="banner__image">
       <img src={image} alt="" width="380" height="380" fetchpriority="high">
     </div>
@@ -25,6 +31,8 @@ const { title, text, buttonText, buttonLink, image } = Astro.props
 
 <style lang="scss">
 .banner {
+
+  /* Внутренний контейнер баннера */
   &__inner {
     display: flex;
     align-items: center;
@@ -53,6 +61,7 @@ const { title, text, buttonText, buttonLink, image } = Astro.props
     opacity: 0.7;
   }
 
+    /* Кнопка баннера */
   &__button {
     display: inline-block;
     margin-top: 72px;
@@ -64,6 +73,7 @@ const { title, text, buttonText, buttonLink, image } = Astro.props
     border-radius: 20px;
     transition: background-color 0.3s;
 
+    /*Эффект при наведении на кнопку*/
     &:hover {
       background-color: var(--color-primary-dark);
     }
@@ -84,6 +94,7 @@ const { title, text, buttonText, buttonLink, image } = Astro.props
       object-fit: contain;
       transition: transform 0.4s ease;
 
+      /*Эффект увеличения при наведении на блок с картинкой*/
       &:hover {
         transform: scale(1.08);
       }

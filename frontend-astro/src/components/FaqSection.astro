@@ -1,13 +1,19 @@
 ---
+// Импорт компонента заголовка секции 
 import SectionHeader from './SectionHeader.astro'
+// Импорт API функции для получения списка вопросов и ответов (FAQ) из CMS
 import { getFaqs } from '../api/collections'
 
+// Асинхронная загрузка данных FAQ из Strapi
 const items = await getFaqs()
 ---
 
+{/* Условный рендеринг секции FAQ*/}
 {items.length > 0 && (
   <section class="faq">
+    {/* Заголовок секции*/}
     <SectionHeader title="Вопросы и ответы" subtitle="Ответы на ваши интересующие вопросы, а также наши новости" />
+    {/* Контейнер для списка вопросов */}
     <div class="faq__list">
       {items.map((item, i) => (
         <div class="faq__item" role="button" tabindex="0" aria-expanded="false">
@@ -19,6 +25,7 @@ const items = await getFaqs()
               <span></span>
             </button>
           </div>
+           {/* содержимое с ответом*/}
           <div class="faq__body">
             <div class="faq__body-inner">
               <div class="faq__divider"></div>
@@ -32,10 +39,14 @@ const items = await getFaqs()
 )}
 
 <script>
+  /**ИНИЦИАЛИЗАЦИЯ ФУНКЦИОНАЛА FAQ */
   function initFaq() {
+        // Находим все элементы FAQ в DOM
     document.querySelectorAll('.faq__item').forEach(item => {
+      /**ОБРАБОТЧИК КЛИКА*/
       item.addEventListener('click', () => {
         const isActive = item.classList.contains('faq__item--active')
+        // ЗАКРЫВАЕМ ВСЕ ОТКРЫТЫЕ ВОПРОСЫ
         document.querySelectorAll('.faq__item--active').forEach(el => {
           el.classList.remove('faq__item--active')
           el.setAttribute('aria-expanded', 'false')
@@ -45,7 +56,7 @@ const items = await getFaqs()
           item.setAttribute('aria-expanded', 'true')
         }
       })
-
+      // ЕСЛИ ТЕКУЩИЙ ЭЛЕМЕНТ НЕ БЫЛ АКТИВЕН  
       item.addEventListener('keydown', (e) => {
         if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') {
           e.preventDefault()
@@ -55,18 +66,21 @@ const items = await getFaqs()
     })
   }
 
+  // Инициализируем функционал при первой загрузке страницы
   initFaq()
   document.addEventListener('astro:after-swap', initFaq)
 </script>
 
 <style lang="scss">
 .faq {
+   /* СПИСОК ВОПРОСОВ */
   &__list {
     display: flex;
     flex-direction: column;
     gap: 16px;
   }
 
+   /*ОТДЕЛЬНЫЙ ВОПРОС */
   &__item {
     background-color: var(--color-accent-light);
     border-radius: 30px;
@@ -74,11 +88,13 @@ const items = await getFaqs()
     cursor: pointer;
     transition: all 0.4s ease;
 
+     /* ЭФФЕКТ ПРИ НАВЕДЕНИИ */
     &:hover {
       transform: scale(1.02);
       box-shadow: 0 15px 35px rgba(255, 150, 23, 0.2);
     }
 
+     /*  АКТИВНЫЙ ВОПРОС */
     &--active:hover {
       transform: scale(1.02);
       box-shadow: 0 15px 40px rgba(255, 150, 23, 0.4);
@@ -89,6 +105,7 @@ const items = await getFaqs()
       color: #fff;
       box-shadow: 0 8px 32px rgba(255, 150, 23, 0.3);
 
+       /* ТРАНСФОРМАЦИЯ КНОПКИ-ПЕРЕКЛЮЧАТЕЛЯ */
       .faq__toggle {
         transform: rotate(180deg);
 
@@ -125,6 +142,7 @@ const items = await getFaqs()
     flex: 1;
   }
 
+   /* КНОПКА-ПЕРЕКЛЮЧАТЕЛЬ  */
   &__toggle {
     position: relative;
     width: 40px;

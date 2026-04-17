@@ -1,12 +1,15 @@
 ---
 import logoImg from '../assets/images/logo.png'
 
+// Интерфейс пропсов компонента
 interface Props {
-  currentPath: string
+  currentPath: string // Текущий URL путь
 }
 
+// Деструктуризация пропсов для удобного использования в шаблоне
 const { currentPath } = Astro.props
 
+// Массив ссылок для навигационного меню
 const links = [
   { href: '/', text: 'О парке' },
   { href: '/attractions', text: 'Аттракционы' },
@@ -14,18 +17,22 @@ const links = [
   { href: '/contacts', text: 'Контакты' },
 ]
 ---
-
+<!--Шапка сайта-->
 <header class="header">
+  <!--Внутренний контейнер с ограничением максимальной ширины -->
   <div class="header__inner container">
     <a href="/" class="header__logo">
       <img src={logoImg.src} alt="Логотип" class="header__logo-icon" width="64" height="64">
       Игровая<br>тигра
     </a>
+
+    <!--Кнопка бургер-меню-->
     <button class="header__burger" aria-label="Меню" aria-expanded="false">
       <span></span>
       <span></span>
       <span></span>
     </button>
+    <!--Навигационное меню-->
     <nav class="header__nav">
       {links.map(link => (
         <a
@@ -41,10 +48,16 @@ const links = [
 </header>
 
 <script>
+   /**
+   * Инициализация функционала шапки (бургер-меню)
+   * Обрабатывает открытие/закрытие мобильного меню
+   */
   function initHeader() {
+    // Находим кнопку бургера и навигационное меню в DOM
     const burger = document.querySelector('.header__burger')
     const nav = document.querySelector('.header__nav')
 
+    // Обработчик клика по бургеру
     burger?.addEventListener('click', () => {
       const isOpen = burger.classList.toggle('header__burger--active')
       nav?.classList.toggle('header__nav--open')
@@ -52,13 +65,17 @@ const links = [
     })
   }
 
+  // Инициализируем при первой загрузке страницы
   initHeader()
 
+  // Повторная инициализация при навигации между страницами Astro
   document.addEventListener('astro:after-swap', initHeader)
 
+  /** Закрываем бургер-меню перед началом навигации*/
   document.addEventListener('astro:before-preparation', () => {
     const burger = document.querySelector('.header__burger')
     const nav = document.querySelector('.header__nav')
+    // Удаляем классы открытого меню
     burger?.classList.remove('header__burger--active')
     nav?.classList.remove('header__nav--open')
     burger?.setAttribute('aria-expanded', 'false')
@@ -72,6 +89,7 @@ const links = [
   z-index: 100;
   background-color: #fff;
 
+  /* Внутренний контейнер: горизонтальное расположение элементов */
   &__inner {
     display: flex;
     align-items: center;
@@ -97,6 +115,7 @@ const links = [
     object-fit: contain;
   }
 
+  /* Кнопка бургер-меню*/
   &__burger {
     display: none;
     flex-direction: column;
@@ -106,6 +125,7 @@ const links = [
     height: 32px;
     z-index: 11;
 
+    /*Полоски бургера*/
     span {
       display: block;
       width: 100%;
@@ -115,6 +135,7 @@ const links = [
       transition: transform 0.3s ease, opacity 0.3s ease;
     }
 
+    /*Анимация при открытом меню*/
     &--active {
       span:nth-child(1) {
         transform: translateY(8px) rotate(45deg);
@@ -130,6 +151,7 @@ const links = [
     }
   }
 
+  /* Навигационное меню*/
   &__nav {
     display: flex;
     align-items: center;
@@ -152,6 +174,7 @@ const links = [
       visibility: hidden;
     }
 
+    /* Подчёркивание при наведении*/
     &::after {
       content: '';
       position: absolute;
@@ -165,6 +188,7 @@ const links = [
       transition: transform 0.3s ease;
     }
 
+    /* При наведении показываем подчёркивание */
     &:hover::after {
       transform: scaleX(1);
       transform-origin: left;

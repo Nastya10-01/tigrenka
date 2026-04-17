@@ -1,6 +1,9 @@
 ---
+
+// Импорт компонента заголовка секции (общий для всего сайта)
 import SectionHeader from './SectionHeader.astro'
 
+// Интерфейс пропсов, которые принимает компонент
 interface Props {
   id?: string
   label?: string
@@ -11,11 +14,14 @@ interface Props {
   image2?: string
 }
 
+// Деструктуризация пропсов для удобного использования в шаблоне
 const { id, label, number, unit, description, image1, image2 } = Astro.props
 ---
 
+<!--Секция "Активити парк"-->
 <section id={id} class="activity-park">
   <SectionHeader title="Активити парк" />
+  <!--Сетка с карточками активити-парка-->
   <div class="activity-park__grid">
     <div class="activity-park__card activity-park__card--text activity-park__card--stats">
       <p class="activity-park__label">{label || 'Для разных возрастов'}</p>
@@ -44,17 +50,20 @@ const { id, label, number, unit, description, image1, image2 } = Astro.props
     gap: 24px;
   }
 
+  /*Базовая стилизация всех карточек*/
   &__card {
     border-radius: 24px;
     overflow: hidden;
     height: 310px;
     transition: all 0.4s ease;
 
+    /*Эффект при наведении на карточку*/
     &:hover {
       transform: scale(1.03);
       box-shadow: 0 20px 40px rgba(255, 150, 23, 0.3);
     }
 
+    /*Модификатор: текстовая карточка*/
     &--text {
       background-color: var(--color-accent-light);
       padding: 40px;
@@ -63,6 +72,7 @@ const { id, label, number, unit, description, image1, image2 } = Astro.props
       justify-content: space-between;
     }
 
+    /* Модификатор: карточка с изображением */
     &--image {
       img {
         width: 100%;
@@ -72,6 +82,7 @@ const { id, label, number, unit, description, image1, image2 } = Astro.props
       }
     }
 
+    /*Модификатор: карточка с описанием*/
     &--desc {
       font-size: 30px;
       font-weight: 500;
@@ -81,6 +92,7 @@ const { id, label, number, unit, description, image1, image2 } = Astro.props
     }
   }
 
+  /* Стили для метки над числом */
   &__label {
     font-family: 'Montserrat Alternates', sans-serif;
     font-size: 30px;
@@ -88,6 +100,8 @@ const { id, label, number, unit, description, image1, image2 } = Astro.props
     color: var(--color-text);
   }
 
+  /* 
+    Стили для большого числа (6, 10, 200 и т.д.)*/
   &__number {
     font-family: 'Montserrat Alternates', sans-serif;
     font-size: 128px;
@@ -96,6 +110,7 @@ const { id, label, number, unit, description, image1, image2 } = Astro.props
     color: var(--color-text);
   }
 
+  /* Стили для единицы измерения */
   &__unit {
     font-size: 36px;
     font-weight: 500;

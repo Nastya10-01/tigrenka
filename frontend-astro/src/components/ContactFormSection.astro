@@ -1,34 +1,46 @@
 ---
+// Импорт компонента заголовка секции
 import SectionHeader from './SectionHeader.astro'
+// Импорт декоративного изображения тигра для украшения формы
 import tigerFormImg from '../assets/images/tiger-form.png'
 
+// Определяем URL для API Strapi с приоритетами
 const strapiUrl = process.env.PUBLIC_STRAPI_BROWSER_URL || process.env.PUBLIC_STRAPI_URL || 'http://localhost:1337'
 ---
 
+<!--СЕКЦИЯ ФОРМЫ ОБРАТНОЙ СВЯЗИ-->
 <section class="contact-form">
   <SectionHeader title="Свяжитесь с нами" subtitle="Если у вас возникли вопросы или вы хотите устроить праздник" />
+  <!--Контейнер-обёртка для формы и декоративного изображения-->
   <div class="contact-form__wrapper">
+      <!--ФОРМА ОБРАТНОЙ СВЯЗИ-->
     <form class="contact-form__form" data-api-url={`${strapiUrl}/api/contact-submissions`}>
+      <!--ПОЛЕ ВВОДА ИМЕНИ-->
       <div class="contact-form__field">
         <label class="contact-form__label">Имя*</label>
         <input type="text" name="name" class="contact-form__input" required>
       </div>
+      <!--ПОЛЕ ВВОДА ТЕЛЕФОНА-->
       <div class="contact-form__field">
         <label class="contact-form__label">Номер*</label>
         <input type="tel" name="phone" class="contact-form__input" required>
       </div>
+      <!--ПОЛЕ ВВОДА СООБЩЕНИЯ-->
       <div class="contact-form__field">
         <label class="contact-form__label">Сообщение*</label>
         <textarea name="message" class="contact-form__textarea" rows="4" required></textarea>
       </div>
+      <!--КНОПКА ОТПРАВКИ ФОРМЫ-->
       <button type="submit" class="contact-form__button">Отправить запрос</button>
     </form>
+    <!--ДЕКОРАТИВНОЕ ИЗОБРАЖЕНИЕ-->
     <div class="contact-form__image">
       <img src={tigerFormImg.src} alt="" width="400" height="500" loading="lazy">
     </div>
   </div>
 </section>
 
+<!--  ПОПАП ДЛЯ ПОДТВЕРЖДЕНИЯ ОТПРАВКИ-->
 <div class="popup popup--form" aria-hidden="true">
   <div class="popup__content">
     <button class="popup__close" aria-label="Закрыть">&times;</button>
@@ -37,10 +49,14 @@ const strapiUrl = process.env.PUBLIC_STRAPI_BROWSER_URL || process.env.PUBLIC_ST
 </div>
 
 <script>
+
+  /**Инициализация функционала формы обратной связи*/
   function initContactForm() {
+        // Находим элементы формы и попапа в DOM
     const form = document.querySelector('.contact-form__form') as HTMLFormElement
     const popup = document.querySelector('.popup--form') as HTMLElement
 
+    // Защита: если форма не найдена — выходим 
     if (!form) return
 
     const apiUrl = form.dataset.apiUrl || 'http://localhost:1337/api/contact-submissions'
@@ -48,26 +64,32 @@ const strapiUrl = process.env.PUBLIC_STRAPI_BROWSER_URL || process.env.PUBLIC_ST
     form.addEventListener('submit', async (e) => {
       e.preventDefault()
 
+      // Находим поля формы по их атрибутам name
       const nameInput = form.querySelector('input[name="name"]') as HTMLInputElement
       const phoneInput = form.querySelector('input[name="phone"]') as HTMLInputElement
       const messageInput = form.querySelector('textarea[name="message"]') as HTMLTextAreaElement
 
-      // Clear previous errors
+      // ОЧИСТКА ПРЕДЫДУЩИХ ОШИБОК
       form.querySelectorAll('.contact-form__input--error').forEach(el => {
         el.classList.remove('contact-form__input--error')
       })
 
+      // КЛИЕНТСКАЯ ВАЛИДАЦИЯ
       let hasError = false
       if (!nameInput.value.trim()) { nameInput.classList.add('contact-form__input--error'); hasError = true }
       if (!phoneInput.value.trim()) { phoneInput.classList.add('contact-form__input--error'); hasError = true }
       if (!messageInput.value.trim()) { messageInput.classList.add('contact-form__input--error'); hasError = true }
+      // Если есть ошибки — выходим, не отправляем форму
       if (hasError) return
-
+            
+      
+      // БЛОКИРОВКА КНОПКИ ОТПРАВКИ
       const btn = form.querySelector('.contact-form__button') as HTMLButtonElement
       btn.disabled = true
       btn.textContent = 'Отправка...'
 
       try {
+        // ОТПРАВКА ЗАПРОСА НА СЕРВЕР
         const response = await fetch(apiUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -81,7 +103,8 @@ const strapiUrl = process.env.PUBLIC_STRAPI_BROWSER_URL || process.env.PUBLIC_ST
         })
 
         if (!response.ok) throw new Error('Submit failed')
-
+    
+        // УСПЕШНАЯ ОТПРАВКА
         popup?.classList.add('popup--visible')
         popup?.setAttribute('aria-hidden', 'false')
         form.reset()
@@ -89,28 +112,30 @@ const strapiUrl = process.env.PUBLIC_STRAPI_BROWSER_URL || process.env.PUBLIC_ST
           popup?.classList.remove('popup--visible')
           popup?.setAttribute('aria-hidden', 'true')
         }, 3000)
-      } catch (err) {
+      } catch (err) {    
+      // ОБРАБОТКА ОШИБОК
         console.error('Form submission failed:', err)
       } finally {
+      // ВОССТАНОВЛЕНИЕ КНОПКИ
         btn.disabled = false
         btn.textContent = 'Отправить запрос'
       }
     })
-
+    // ЗАКРЫТИЕ ПОПАПА ПРИ КЛИКЕ НА ФОН 
     popup?.addEventListener('click', (e) => {
       if (e.target === popup) {
         popup.classList.remove('popup--visible')
         popup.setAttribute('aria-hidden', 'true')
       }
     })
-
+    // ЗАКРЫТИЕ ПОПАПА ПРИ КЛИКЕ НА КНОПКУ "ЗАКРЫТЬ" 
     const closeBtn = popup?.querySelector('.popup__close')
     closeBtn?.addEventListener('click', () => {
       popup?.classList.remove('popup--visible')
       popup?.setAttribute('aria-hidden', 'true')
     })
   }
-
+  // Инициализируем функционал при первой загрузке страницы
   initContactForm()
   document.addEventListener('astro:after-swap', initContactForm)
 </script>
@@ -134,18 +159,21 @@ const strapiUrl = process.env.PUBLIC_STRAPI_BROWSER_URL || process.env.PUBLIC_ST
     gap: 24px;
   }
 
+  /*КОНТЕЙНЕР ПОЛЯ ВВОДА*/
   &__field {
     display: flex;
     flex-direction: column;
     gap: 8px;
   }
 
+    /*МЕТКА ПОЛЯ*/
   &__label {
     font-family: 'Montserrat Alternates', sans-serif;
     font-size: 16px;
     font-weight: 500;
   }
 
+  /*ОБЩИЕ СТИЛИ ДЛЯ ПОЛЕЙ ВВОДА И ТЕКСТОВОЙ ОБЛАСТИ*/
   &__input,
   &__textarea {
     width: 100%;
@@ -157,20 +185,24 @@ const strapiUrl = process.env.PUBLIC_STRAPI_BROWSER_URL || process.env.PUBLIC_ST
     outline: none;
     transition: box-shadow 0.3s;
 
+      /*ЭФФЕКТ ПРИ ФОКУСЕ*/
     &:focus {
       box-shadow: 0 0 0 2px var(--color-primary);
     }
 
+      /*КЛАСС ОШИБКИ*/
     &--error {
       box-shadow: 0 0 0 2px #e74c3c;
     }
   }
 
+    /*ТЕКСТОВАЯ ОБЛАСТЬ*/
   &__textarea {
     resize: none;
     min-height: 120px;
   }
 
+    /*КНОПКА ОТПРАВКИ*/
   &__button {
     padding: 20px;
     background-color: var(--color-text);
@@ -182,10 +214,12 @@ const strapiUrl = process.env.PUBLIC_STRAPI_BROWSER_URL || process.env.PUBLIC_ST
     transition: opacity 0.3s;
     max-width: 520px;
 
+    /*ЭФФЕКТ ПРИ НАВЕДЕНИИ*/
     &:hover {
       opacity: 0.85;
     }
 
+    /* СТИЛИ ДЛЯ ОТКЛЮЧЁННОЙ КНОПКИ*/
     &:disabled {
       opacity: 0.6;
       cursor: not-allowed;
