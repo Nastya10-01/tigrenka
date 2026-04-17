@@ -1,23 +1,32 @@
 ---
+// Импорт компонента для плавных переходов между страницами (анимация смены маршрутов)
 import { ViewTransitions } from 'astro:transitions'
+// Импорт шрифтов из пакета @fontsource
 import '@fontsource/montserrat/700.css'
 import '@fontsource/montserrat/900.css'
 import '@fontsource/montserrat-alternates/400.css'
 import '@fontsource/montserrat-alternates/500.css'
 import '@fontsource/montserrat-alternates/700.css'
+// Глобальные стили приложения (SCSS)
 import '../assets/styles/main.scss'
-import AppHeader from '../components/AppHeader.astro'
-import AppFooter from '../components/AppFooter.astro'
-import FloatingContacts from '../components/FloatingContacts.astro'
+// Импорт UI компонентов
+import AppHeader from '../components/AppHeader.astro' // Шапка сайта с навигацией
+import AppFooter from '../components/AppFooter.astro' // Подвал сайта
+import FloatingContacts from '../components/FloatingContacts.astro' // Плавающая кнопка с контактами
+// API функция для получения данных подвала (телефон, ссылки на соцсети)
 import { getFooter } from '../api/footer'
 
+// Интерфейс пропсов, которые может принимать этот layout-компонент
 interface Props {
   title: string
   description: string
   bodyClass?: string
 }
 
+// Деструктуризация пропсов из Astro.props
 const { title, description, bodyClass } = Astro.props
+
+// Асинхронное получение данных для подвала (контактная информация)
 const footerData = await getFooter()
 
 ---
@@ -37,7 +46,7 @@ const footerData = await getFooter()
   <meta name="keywords" content="игровой центр Аша, детский развлекательный центр, Тигра Аша, аттракционы для детей, день рождения Аша, батуты, XBOX">
   <link rel="canonical" href={`https://игровая-тигра.рф${Astro.url.pathname}`}>
 
-  <!-- Open Graph -->
+  <!-- Open Graph  метатеги для соцсетей-->
   <meta property="og:locale" content="ru_RU">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Игровой центр Тигра">
@@ -45,16 +54,16 @@ const footerData = await getFooter()
   <meta property="og:description" content={description}>
   <meta property="og:url" content={`https://игровая-тигра.рф${Astro.url.pathname}`}>
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
+  <!-- Twitter метатеги для отображения  -->
+  <meta name="twitter:card" content="summary_large_image"> <!-- Тип карточки с большой картинкой -->
   <meta name="twitter:title" content={title}>
   <meta name="twitter:description" content={description}>
 
-  <!-- Schema.org -->
+  <!-- Schema.org структурированные данные для поисковиков-->
   <script type="application/ld+json" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "AmusementPark",
-    "name": "Игровой центр Тигра",
+    "@context": "https://schema.org", // Схема данных
+    "@type": "AmusementPark", // Тип объекта — парк аттракционов
+    "name": "Игровой центр Тигра", // Название заведения
     "description": "Детский развлекательный центр с 6 игровыми зонами, батутной ареной, XBOX и банкетной комнатой для проведения праздников.",
     "url": "https://игровая-тигра.рф/",
     "telephone": "+7-912-307-08-07",
@@ -64,22 +73,23 @@ const footerData = await getFooter()
       "addressLocality": "Аша",
       "addressCountry": "RU"
     },
-    "geo": {
+    "geo": {    // Географические координаты
       "@type": "GeoCoordinates",
       "latitude": 54.9917,
       "longitude": 57.2744
     },
-    "priceRange": "$$"
+    "priceRange": "$$"   // Ценовой диапазон
   })} />
 
+<!-- Компонент плавных переходов между страницами Astro-->
   <ViewTransitions />
 </head>
-<body class={bodyClass}>
-  <AppHeader currentPath={Astro.url.pathname} />
-  <main>
+<body class={bodyClass}>  <!-- позволяет добавить свой CSS класс-->
+  <AppHeader currentPath={Astro.url.pathname} />    <!-- Шапка сайта: передаём текущий путь для подсветки активного пункта меню -->
+  <main>   <!-- Основной контент страницы: сюда через <slot /> будут подставляться дочерние компоненты/страницы -->
     <slot />
   </main>
-  <AppFooter />
+  <AppFooter />  <!-- Подвал сайта -->
   {footerData && (
     <FloatingContacts
       phone={footerData.phone}
