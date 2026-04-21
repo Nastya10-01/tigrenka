@@ -27,7 +27,7 @@ const [cards, featured] = await Promise.all([
 
     {/*Сетка с карточками преимуществ*/}
     <div class="advantages__grid">
-      {cards.map((card: any) => (
+      {cards.map((card) => (
         <div class="advantages__card">
           <div class="advantages__label-wrap"><span class="advantages__label">{card.label}</span></div>
           {/*Условный рендеринг числового блока*/}
