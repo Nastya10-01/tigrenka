@@ -1,6 +1,7 @@
 {
   "typescript.tsdk": "frontend-astro/node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
+  "astro.language-server.ls-path": "${workspaceFolder}/frontend-astro/node_modules/@astrojs/language-server/bin/nodeServer.js",
   "files.associations": {
     "*.astro": "astro"
   },
