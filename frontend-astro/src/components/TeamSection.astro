@@ -15,7 +15,7 @@ const members = await getTeamMembers()
     {/*СЕТКА КАРТОЧЕК КОМАНДЫ*/}
     <div class="team__grid">
       {/* Перебираем массив членов команды и рендерим карточку для каждого member  description */}
-      {members.map(member => (
+      {members.map((member: any) => (
         <div class="team__card">
           {/*АВАТАР иконка с инициалом*/}
           <div class="team__avatar">

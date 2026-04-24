@@ -17,7 +17,7 @@ const reviews = await getReviews()
     <div class="reviews__carousel">
       {/* ТРЕК КАРУСЕЛИ */}
       <div class="reviews__track">
-        {reviews.map(review => (
+        {reviews.map((review: any) => (
           <div class="reviews__slide">
             {/* КАРТОЧКА ОТЗЫВА */}
             <div class="reviews__card">
@@ -42,7 +42,7 @@ const reviews = await getReviews()
         </button>
 
         <div class="reviews__dots">
-          {reviews.map((_, i) => (
+          {reviews.map((_: any, i: number) => (
             <button
               class:list={['reviews__dot', { 'reviews__dot--active': i === 0 }]}
               data-index={i}
