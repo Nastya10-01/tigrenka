@@ -26,7 +26,7 @@ const pageData = await getAttractionsPage()
 <!--Основной контейнер страницы-->
   <div class="page container">
     {pageData && (
-      <>
+      <Fragment>
 
       <!--Баннер в верхней части страницы
           Принимает заголовок, текст, текст кнопки, ссылку и изображение
@@ -59,7 +59,7 @@ const pageData = await getAttractionsPage()
           image1={strapiMedia(pageData.xboxImage1)}
           image2={strapiMedia(pageData.xboxImage2)}
         />
-      </>
+      </Fragment>
     )} 
     <ReviewsSection />      <!-- Секция с отзывами клиентов -->
     <ContactFormSection />   <!-- Форма обратной связи  -->

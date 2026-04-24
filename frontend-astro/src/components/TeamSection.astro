@@ -1,183 +1,204 @@
 ---
 // Импорт компонента заголовка секции
-import SectionHeader from './SectionHeader.astro'
+import SectionHeader from "./SectionHeader.astro";
 // Импорт API функции для получения данных о команде из CMS (Strapi)
-import { getTeamMembers } from '../api/collections'
-import pavImg from '../assets/images/pav.png'
+import { getTeamMembers } from "../api/collections";
+import pavImg from "../assets/images/pav.png";
 
 // Асинхронная загрузка данных о членах команды
-const members = await getTeamMembers()
+const members = await getTeamMembers();
 ---
+
 {/* Условный рендеринг секции команды*/}
-{members.length > 0 && (
-  <section class="team">
-    <SectionHeader title="Наша команда" subtitle="Кто веселит, а также помогает Вам и вашим детям" />
-    {/*СЕТКА КАРТОЧЕК КОМАНДЫ*/}
-    <div class="team__grid">
-      {/* Перебираем массив членов команды и рендерим карточку для каждого member  description */}
-      {members.map((member: any) => (
-        <div class="team__card">
-          {/*АВАТАР иконка с инициалом*/}
-          <div class="team__avatar">
-            <span class="team__avatar-placeholder">{member.name.charAt(0)}</span>
+{
+  members.length > 0 && (
+    <section class="team">
+      <SectionHeader
+        title="Наша команда"
+        subtitle="Кто веселит, а также помогает Вам и вашим детям"
+      />
+      {/*СЕТКА КАРТОЧЕК КОМАНДЫ*/}
+      <div class="team__grid">
+        {/* Перебираем массив членов команды и рендерим карточку для каждого member  description */}
+        {members.map((member: any) => (
+          <div class="team__card">
+            {/*АВАТАР иконка с инициалом*/}
+            <div class="team__avatar">
+              <span class="team__avatar-placeholder">
+                {member.name.charAt(0)}
+              </span>
+            </div>
+            <h3 class="team__name">
+              {member.name}{" "}
+              <img
+                src={pavImg.src}
+                alt=""
+                class="team__paw"
+                width="25"
+                height="25"
+              />
+            </h3>
+            <div class="team__divider" />
+            <p class="team__description">{member.description}</p>
           </div>
-          <h3 class="team__name">{member.name} <img src={pavImg.src} alt="" class="team__paw" width="25" height="25"></h3>
-          <div class="team__divider"></div>
-          <p class="team__description">{member.description}</p>
-        </div>
-      ))}
-    </div>
-  </section>
-)}
-
-<style lang="scss">
-.team {
-  &__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-
-   /*КАРТОЧКА СОТРУДНИКА*/
-  &__card {
-    border: 2px solid var(--color-primary);
-    border-radius: 24px;
-    padding: 32px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-    /*ЭФФЕКТ ПРИ НАВЕДЕНИИ НА КАРТОЧКУ*/
-    &:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 15px 30px rgba(255, 150, 23, 0.25);
-
-      /* Лапка */
-      .team__paw {
-        transform: scale(1.1) rotate(10deg);
-      }
-
-      /* Аватар: тёмная оранжевая обводка */
-      .team__avatar {
-        border-color: var(--color-primary-dark);
-      }
-
-      /* Инициал: тёмный оранжевый цвет */
-      .team__avatar-placeholder {
-        color: var(--color-primary-dark);
-      }
-
-      /* Имя: оранжевый цвет */
-      .team__name {
-        color: var(--color-primary);
-      }
-
-      /* Разделитель: тёмный оранжевый цвет */
-      .team__divider {
-        background-color: var(--color-primary-dark);
-      }
-    }
-  }
-
-  /* ДЕКОРАТИВНАЯ ИКОНКА ЛАПКИ*/
-  &__paw {
-    width: 25px !important;
-    height: 25px !important;
-    max-width: none !important;
-    object-fit: contain;
-    display: inline !important;
-    vertical-align: middle;
-    margin-left: 8px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-  }
-
-  /* Аватар(круглая область) */
-  &__avatar {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    border: 2px solid var(--color-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 16px;
-    background-color: var(--color-accent-light);
-    transition: border-color 0.3s ease;
-  }
-
-  /* ПЛЕЙСХОЛДЕР АВАТАРА */
-  &__avatar-placeholder {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--color-primary);
-    transition: color 0.3s ease;
-  }
-
-  &__name {
-    font-family: 'Montserrat Alternates', sans-serif;
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 16px;
-    transition: color 0.3s ease;
-  }
-
-  &__divider {
-    height: 3px;
-    background-color: var(--color-primary);
-    border-radius: 2px;
-    margin-bottom: 16px;
-    transition: background-color 0.3s ease;
-  }
-
-  &__description {
-    font-size: 16px;
-    line-height: 1.5;
-  }
+        ))}
+      </div>
+    </section>
+  )
 }
 
-@media (max-width: 768px) {
+<style lang="scss">
   .team {
     &__grid {
-      display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-padding-left: 20px;
-      gap: 16px;
-      padding: 0 20px 16px;
-      margin: 0 -20px;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
 
-      &::-webkit-scrollbar {
-        display: none;
+    /*КАРТОЧКА СОТРУДНИКА*/
+    &__card {
+      border: 2px solid var(--color-primary);
+      border-radius: 24px;
+      padding: 32px;
+      transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+
+      /*ЭФФЕКТ ПРИ НАВЕДЕНИИ НА КАРТОЧКУ*/
+      &:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 15px 30px rgba(255, 150, 23, 0.25);
+
+        /* Лапка */
+        .team__paw {
+          transform: scale(1.1) rotate(10deg);
+        }
+
+        /* Аватар: тёмная оранжевая обводка */
+        .team__avatar {
+          border-color: var(--color-primary-dark);
+        }
+
+        /* Инициал: тёмный оранжевый цвет */
+        .team__avatar-placeholder {
+          color: var(--color-primary-dark);
+        }
+
+        /* Имя: оранжевый цвет */
+        .team__name {
+          color: var(--color-primary);
+        }
+
+        /* Разделитель: тёмный оранжевый цвет */
+        .team__divider {
+          background-color: var(--color-primary-dark);
+        }
       }
     }
 
-    &__card {
-      scroll-snap-align: start;
-      flex-shrink: 0;
-      width: 75%;
-      padding: 20px;
-      border-radius: 16px;
+    /* ДЕКОРАТИВНАЯ ИКОНКА ЛАПКИ*/
+    &__paw {
+      width: 25px !important;
+      height: 25px !important;
+      max-width: none !important;
+      object-fit: contain;
+      display: inline !important;
+      vertical-align: middle;
+      margin-left: 8px;
+      transition:
+        transform 0.3s ease,
+        opacity 0.3s ease;
     }
 
+    /* Аватар(круглая область) */
     &__avatar {
-      width: 48px;
-      height: 48px;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 2px solid var(--color-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      background-color: var(--color-accent-light);
+      transition: border-color 0.3s ease;
     }
 
+    /* ПЛЕЙСХОЛДЕР АВАТАРА */
     &__avatar-placeholder {
-      font-size: 18px;
+      font-family: "Montserrat", sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--color-primary);
+      transition: color 0.3s ease;
     }
 
     &__name {
-      font-size: 18px;
-      margin-bottom: 12px;
+      font-family: "Montserrat Alternates", sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      transition: color 0.3s ease;
+    }
+
+    &__divider {
+      height: 3px;
+      background-color: var(--color-primary);
+      border-radius: 2px;
+      margin-bottom: 16px;
+      transition: background-color 0.3s ease;
     }
 
     &__description {
-      font-size: 14px;
+      font-size: 16px;
+      line-height: 1.5;
     }
   }
-}
+
+  @media (max-width: 768px) {
+    .team {
+      &__grid {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-padding-left: 20px;
+        gap: 16px;
+        padding: 0 20px 16px;
+        margin: 0 -20px;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+
+      &__card {
+        scroll-snap-align: start;
+        flex-shrink: 0;
+        width: 75%;
+        padding: 20px;
+        border-radius: 16px;
+      }
+
+      &__avatar {
+        width: 48px;
+        height: 48px;
+      }
+
+      &__avatar-placeholder {
+        font-size: 18px;
+      }
+
+      &__name {
+        font-size: 18px;
+        margin-bottom: 12px;
+      }
+
+      &__description {
+        font-size: 14px;
+      }
+    }
+  }
 </style>
