@@ -1,140 +1,225 @@
 ---
 // Импорт API функции для получения данных страницы контактов
-import { getContactsPage } from '../api/contacts'
+import { getContactsPage } from "../api/contacts";
 
 // Асинхронная загрузка контактных данных из CMS (Strapi)
-const data = await getContactsPage()
+const data = await getContactsPage();
 ---
 
 {/*Условный рендеринг секции контактов*/}
-{data && (
-  <section class="contacts-section">
-    <h1 class="contacts-section__title">Контакты</h1>
+{
+  data && (
+    <section class="contacts-section">
+      <h1 class="contacts-section__title">Контакты</h1>
 
-    {/*КАРТОЧКА 1: ОСНОВНАЯ КОНТАКТНАЯ ИНФОРМАЦИЯ*/}
-    <div class="contacts-section__card">
-      {/*ДЕКОРАТИВНЫЕ ЛАПКИ (SVG)*/}
-      <svg class="contacts-section__paw contacts-section__paw--tl" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="12" cy="8" rx="5" ry="6" fill="currentColor"/><ellipse cx="28" cy="8" rx="5" ry="6" fill="currentColor"/><ellipse cx="5" cy="22" rx="4.5" ry="5.5" fill="currentColor"/><ellipse cx="35" cy="22" rx="4.5" ry="5.5" fill="currentColor"/><ellipse cx="20" cy="28" rx="10" ry="9" fill="currentColor"/></svg>
-      <svg class="contacts-section__paw contacts-section__paw--br" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="12" cy="8" rx="5" ry="6" fill="currentColor"/><ellipse cx="28" cy="8" rx="5" ry="6" fill="currentColor"/><ellipse cx="5" cy="22" rx="4.5" ry="5.5" fill="currentColor"/><ellipse cx="35" cy="22" rx="4.5" ry="5.5" fill="currentColor"/><ellipse cx="20" cy="28" rx="10" ry="9" fill="currentColor"/></svg>
-      <p><strong>Мы находимся:</strong></p>
-      <p>{data.address}</p>
-      <p>Телефон: <a href={`tel:${data.phone}`}>{data.phone}</a></p>
-      {data.vkLink && <p>Вконтакте: <a href={data.vkLink} class="contacts-section__link">тыкайте сюда</a></p>}
-    </div>
+      {/*КАРТОЧКА 1: ОСНОВНАЯ КОНТАКТНАЯ ИНФОРМАЦИЯ*/}
+      <div class="contacts-section__card">
+        {/*ДЕКОРАТИВНЫЕ ЛАПКИ (SVG)*/}
+        <svg
+          class="contacts-section__paw contacts-section__paw--tl"
+          viewBox="0 0 40 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <Fragment>
+            <ellipse cx="12" cy="8" rx="5" ry="6" fill="currentColor" />
+            <ellipse cx="28" cy="8" rx="5" ry="6" fill="currentColor" />
+            <ellipse cx="5" cy="22" rx="4.5" ry="5.5" fill="currentColor" />
+            <ellipse cx="35" cy="22" rx="4.5" ry="5.5" fill="currentColor" />
+            <ellipse cx="20" cy="28" rx="10" ry="9" fill="currentColor" />
+          </Fragment>
+        </svg>
+        <svg
+          class="contacts-section__paw contacts-section__paw--br"
+          viewBox="0 0 40 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <Fragment>
+            <ellipse cx="12" cy="8" rx="5" ry="6" fill="currentColor" />
+            <ellipse cx="28" cy="8" rx="5" ry="6" fill="currentColor" />
+            <ellipse cx="5" cy="22" rx="4.5" ry="5.5" fill="currentColor" />
+            <ellipse cx="35" cy="22" rx="4.5" ry="5.5" fill="currentColor" />
+            <ellipse cx="20" cy="28" rx="10" ry="9" fill="currentColor" />
+          </Fragment>
+        </svg>
+        <p>
+          <strong>Мы находимся:</strong>
+        </p>
+        <p>{data.address}</p>
+        <p>
+          Телефон: <a href={`tel:${data.phone}`}>{data.phone}</a>
+        </p>
+        {data.vkLink && (
+          <p>
+            Вконтакте:{" "}
+            <a href={data.vkLink} class="contacts-section__link">
+              тыкайте сюда
+            </a>
+          </p>
+        )}
+      </div>
 
-    {/*КАРТОЧКА 2: СОТРУДНИЧЕСТВО И СОЦИАЛЬНЫЕ СЕТИ*/}
-    <div class="contacts-section__card">
-      <svg class="contacts-section__paw contacts-section__paw--tr" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="12" cy="8" rx="5" ry="6" fill="currentColor"/><ellipse cx="28" cy="8" rx="5" ry="6" fill="currentColor"/><ellipse cx="5" cy="22" rx="4.5" ry="5.5" fill="currentColor"/><ellipse cx="35" cy="22" rx="4.5" ry="5.5" fill="currentColor"/><ellipse cx="20" cy="28" rx="10" ry="9" fill="currentColor"/></svg>
-      <svg class="contacts-section__paw contacts-section__paw--bl" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="12" cy="8" rx="5" ry="6" fill="currentColor"/><ellipse cx="28" cy="8" rx="5" ry="6" fill="currentColor"/><ellipse cx="5" cy="22" rx="4.5" ry="5.5" fill="currentColor"/><ellipse cx="35" cy="22" rx="4.5" ry="5.5" fill="currentColor"/><ellipse cx="20" cy="28" rx="10" ry="9" fill="currentColor"/></svg>
-      <p><strong>{data.collaborationText || 'Мы всегда открыты для предложений и сотрудничества!'}</strong><br>Свяжитесь с нами по указанным контактам.</p>
-      <p>{data.socialText || 'Будьте всегда в центре новостей, узнавайте первыми о наших акциях и скидках.'}<br>Подпишитесь на нас в соц сетях.</p>
-    </div>
+      {/*КАРТОЧКА 2: СОТРУДНИЧЕСТВО И СОЦИАЛЬНЫЕ СЕТИ*/}
+      <div class="contacts-section__card">
+        <svg
+          class="contacts-section__paw contacts-section__paw--tr"
+          viewBox="0 0 40 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <Fragment>
+            <ellipse cx="12" cy="8" rx="5" ry="6" fill="currentColor" />
+            <ellipse cx="28" cy="8" rx="5" ry="6" fill="currentColor" />
+            <ellipse cx="5" cy="22" rx="4.5" ry="5.5" fill="currentColor" />
+            <ellipse cx="35" cy="22" rx="4.5" ry="5.5" fill="currentColor" />
+            <ellipse cx="20" cy="28" rx="10" ry="9" fill="currentColor" />
+          </Fragment>
+        </svg>
+        <svg
+          class="contacts-section__paw contacts-section__paw--bl"
+          viewBox="0 0 40 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <Fragment>
+            <ellipse cx="12" cy="8" rx="5" ry="6" fill="currentColor" />
+            <ellipse cx="28" cy="8" rx="5" ry="6" fill="currentColor" />
+            <ellipse cx="5" cy="22" rx="4.5" ry="5.5" fill="currentColor" />
+            <ellipse cx="35" cy="22" rx="4.5" ry="5.5" fill="currentColor" />
+            <ellipse cx="20" cy="28" rx="10" ry="9" fill="currentColor" />
+          </Fragment>
+        </svg>
+        <p>
+          <Fragment>
+            <strong>
+              {data.collaborationText ||
+                "Мы всегда открыты для предложений и сотрудничества!"}
+            </strong>
+            <br />
+          </Fragment>
+          Свяжитесь с нами по указанным контактам.
+        </p>
+        <p>
+          {data.socialText ||
+            "Будьте всегда в центре новостей, узнавайте первыми о наших акциях и скидках."}
+          <br />
+          Подпишитесь на нас в соц сетях.
+        </p>
+      </div>
 
-    {/*ССЫЛКА НА ДОГОВОР-ОФЕРТУ*/}
-    {data.offerLink && <a href={data.offerLink} class="contacts-section__offer">Договор-публичная оферта на оказание услуг</a>}
-  </section>
-)}
+      {/*ССЫЛКА НА ДОГОВОР-ОФЕРТУ*/}
+      {data.offerLink && (
+        <a href={data.offerLink} class="contacts-section__offer">
+          Договор-публичная оферта на оказание услуг
+        </a>
+      )}
+    </section>
+  )
+}
 
 <style lang="scss">
-.contacts-section {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 24px;
-
-  /*ЗАГОЛОВОК СЕКЦИИ (h1)*/
-  &__title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 48px;
-    font-weight: 800;
-    color: #fff;
-  }
-
-  /*КАРТОЧКА С КОНТАКТАМИ*/
-  &__card {
-    position: relative;
+  .contacts-section {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    width: 100%;
-    border-radius: 20px;
-    padding: 28px 32px;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 1.6;
-    color: var(--color-text);
-    background-color: var(--color-accent-light);
-    overflow: hidden;
-  }
+    align-items: flex-start;
+    gap: 24px;
+
+    /*ЗАГОЛОВОК СЕКЦИИ (h1)*/
+    &__title {
+      font-family: "Montserrat", sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    /*КАРТОЧКА С КОНТАКТАМИ*/
+    &__card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+      border-radius: 20px;
+      padding: 28px 32px;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.6;
+      color: var(--color-text);
+      background-color: var(--color-accent-light);
+      overflow: hidden;
+    }
 
     /*ДЕКОРАТИВНЫЕ ЛАПКИ (SVG)*/
-  &__paw {
-    position: absolute;
-    width: 48px;
-    height: 48px;
-    color: var(--color-primary);
-    opacity: 0;
-    transition: opacity 0.4s ease, transform 0.5s ease;
-    pointer-events: none;
+    &__paw {
+      position: absolute;
+      width: 48px;
+      height: 48px;
+      color: var(--color-primary);
+      opacity: 0;
+      transition:
+        opacity 0.4s ease,
+        transform 0.5s ease;
+      pointer-events: none;
 
-    /* Лапка в левом верхнем углу */
-    &--tl {
-      top: 12px;
-      left: 16px;
-      transform: rotate(-20deg) scale(0.7);
-    }
-    
-    /* Лапка в правом верхнем углу */
-    &--tr {
-      top: 12px;
-      right: 16px;
-      transform: rotate(25deg) scale(0.7);
-    }
+      /* Лапка в левом верхнем углу */
+      &--tl {
+        top: 12px;
+        left: 16px;
+        transform: rotate(-20deg) scale(0.7);
+      }
 
-    /* Лапка в правом нижнем углу */
-    &--br {
-      bottom: 12px;
-      right: 20px;
-      transform: rotate(15deg) scale(0.7);
-    }
+      /* Лапка в правом верхнем углу */
+      &--tr {
+        top: 12px;
+        right: 16px;
+        transform: rotate(25deg) scale(0.7);
+      }
 
-    /* Лапка в левом нижнем углу */
-    &--bl {
-      bottom: 12px;
-      left: 20px;
-      transform: rotate(-10deg) scale(0.7);
-    }
+      /* Лапка в правом нижнем углу */
+      &--br {
+        bottom: 12px;
+        right: 20px;
+        transform: rotate(15deg) scale(0.7);
+      }
 
-    /* АНИМАЦИЯ ПРИ НАВЕДЕНИИ НА КАРТОЧКУ*/
-    .contacts-section__card:hover & {
-      opacity: 0.18;
-      transform: rotate(0deg) scale(1);
-    }
-  }
+      /* Лапка в левом нижнем углу */
+      &--bl {
+        bottom: 12px;
+        left: 20px;
+        transform: rotate(-10deg) scale(0.7);
+      }
 
-  &__link {
-    text-decoration: underline;
-    font-weight: 700;
-  }
-  /*  ССЫЛКА НА ДОГОВОР-ОФЕРТУ*/
-  &__offer {
-    font-size: 16px;
-    font-weight: 500;
-    text-decoration: underline;
-    color: var(--color-text);
-  }
-}
-
-@media (max-width: 768px) {
-  .contacts-section {
-    &__title {
-      font-size: 32px;
+      /* АНИМАЦИЯ ПРИ НАВЕДЕНИИ НА КАРТОЧКУ*/
+      .contacts-section__card:hover & {
+        opacity: 0.18;
+        transform: rotate(0deg) scale(1);
+      }
     }
 
-    &__card {
-      padding: 20px;
-      font-size: 14px;
+    &__link {
+      text-decoration: underline;
+      font-weight: 700;
+    }
+    /*  ССЫЛКА НА ДОГОВОР-ОФЕРТУ*/
+    &__offer {
+      font-size: 16px;
+      font-weight: 500;
+      text-decoration: underline;
+      color: var(--color-text);
     }
   }
-}
+
+  @media (max-width: 768px) {
+    .contacts-section {
+      &__title {
+        font-size: 32px;
+      }
+
+      &__card {
+        padding: 20px;
+        font-size: 14px;
+      }
+    }
+  }
 </style>

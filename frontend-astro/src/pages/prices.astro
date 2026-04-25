@@ -30,7 +30,7 @@ const [pageData, pricingCards] = await Promise.all([
   <div class="page container">
     <!--Условный рендеринг баннера: Показываем баннер если данные успешно загружены из CMS-->
     {pageData && (
-      <>
+      <Fragment>
         <!--Баннер страницы цен-->
         <AppBanner
           title={pageData.bannerTitle}
@@ -47,7 +47,7 @@ const [pageData, pricingCards] = await Promise.all([
           image1={strapiMedia(pageData.pricingImage1)}
           image2={strapiMedia(pageData.pricingImage2)}
         />
-      </>
+      </Fragment>
     )}
       <!--Форма обратной связи-->
       <ContactFormSection />

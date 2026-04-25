@@ -1,0 +1,22 @@
+{
+  "typescript.tsdk": "frontend-astro/node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "astro.language-server.ls-path": "${workspaceFolder}/frontend-astro/node_modules/@astrojs/language-server/bin/nodeServer.js",
+  "files.associations": {
+    "*.astro": "astro"
+  },
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
+  },
+  "files.exclude": {
+    "**/.astro": true,
+    "**/dist": true,
+    "**/node_modules": true
+  },
+  "search.exclude": {
+    "**/.astro": true,
+    "**/dist": true,
+    "**/node_modules": true,
+    "**/package-lock.json": true
+  }
+}

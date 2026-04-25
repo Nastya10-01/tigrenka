@@ -15,7 +15,7 @@ const items = await getFaqs()
     <SectionHeader title="Вопросы и ответы" subtitle="Ответы на ваши интересующие вопросы, а также наши новости" />
     {/* Контейнер для списка вопросов */}
     <div class="faq__list">
-      {items.map((item, i) => (
+      {items.map((item: any, i: number) => (
         <div class="faq__item" role="button" tabindex="0" aria-expanded="false">
           <div class="faq__head">
             <span class="faq__number">{String(i + 1).padStart(2, '0')}</span>

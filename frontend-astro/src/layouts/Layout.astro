@@ -1,6 +1,6 @@
 ---
 // Импорт компонента для плавных переходов между страницами (анимация смены маршрутов)
-import { ViewTransitions } from 'astro:transitions'
+import { ClientRouter } from 'astro:transitions'
 // Импорт шрифтов из пакета @fontsource
 import '@fontsource/montserrat/700.css'
 import '@fontsource/montserrat/900.css'
@@ -60,7 +60,7 @@ const footerData = await getFooter()
   <meta name="twitter:description" content={description}>
 
   <!-- Schema.org структурированные данные для поисковиков-->
-  <script type="application/ld+json" set:html={JSON.stringify({
+  <script is:inline type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org", // Схема данных
     "@type": "AmusementPark", // Тип объекта — парк аттракционов
     "name": "Игровой центр Тигра", // Название заведения
@@ -82,7 +82,7 @@ const footerData = await getFooter()
   })} />
 
 <!-- Компонент плавных переходов между страницами Astro-->
-  <ViewTransitions />
+  <ClientRouter />
 </head>
 <body class={bodyClass}>  <!-- позволяет добавить свой CSS класс-->
   <AppHeader currentPath={Astro.url.pathname} />    <!-- Шапка сайта: передаём текущий путь для подсветки активного пункта меню -->
