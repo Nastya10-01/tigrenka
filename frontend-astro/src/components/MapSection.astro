@@ -31,10 +31,8 @@ const data = await getMapSection()
 <style lang="scss">
 .map-section {
   &__wrapper {
-    background-color: var(--color-accent-light);
-    border-radius: 45px;
-    padding: 16px;
     overflow: hidden;
+    border-radius: 32px;
   }
 
   &__iframe {
@@ -49,8 +47,7 @@ const data = await getMapSection()
 @media (max-width: 768px) {
   .map-section {
     &__wrapper {
-      border-radius: 24px;
-      padding: 8px;
+      border-radius: 18px;
     }
 
     &__iframe {
