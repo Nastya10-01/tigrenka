@@ -3,8 +3,6 @@
 import { getFooter } from '../api/footer'
 import logoImg from '../assets/images/logo.png'
 import vkImg from '../assets/images/socials/vk.png'
-import instImg from '../assets/images/socials/inst.png'
-import tgImg from '../assets/images/socials/tg.png'
 
 // Асинхронная загрузка данных для подвала из CMS (Strapi)
 const data = await getFooter()
@@ -33,16 +31,6 @@ const data = await getFooter()
           {data.vkLink && (
             <a href={data.vkLink} class="footer__social" aria-label="ВКонтакте" target="_blank" rel="noopener noreferrer">
               <img src={vkImg.src} alt="VK" width="22" height="22">
-            </a>
-          )}
-          {data.instagramLink && (
-            <a href={data.instagramLink} class="footer__social" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
-              <img src={instImg.src} alt="Instagram" width="22" height="22">
-            </a>
-          )}
-          {data.telegramLink && (
-            <a href={data.telegramLink} class="footer__social" aria-label="Telegram" target="_blank" rel="noopener noreferrer">
-              <img src={tgImg.src} alt="Telegram" width="22" height="22">
             </a>
           )}
         </div>

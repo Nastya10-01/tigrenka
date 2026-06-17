@@ -71,8 +71,6 @@ const SEED_DATA = {
     address: 'город Аша, ул. Толстова, дом 5',
     copyright: '©2025 TigraIgra',
     vkLink: 'https://vk.com/ashatigra',
-    instagramLink: '#',
-    telegramLink: '#',
   },
 
   contactsPage: {
